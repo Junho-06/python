@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'Dockerfile'
+      - 'app.py'
+      - '.github/workflows/**'
       
 env:
   AWS_REGION: ap-northeast-2
