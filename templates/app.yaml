@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+      - name: sample
+        image: 200148130345.dkr.ecr.ap-northeast-2.amazonaws.com/python:24b255e1fec59f575bbfcee2140418972d8eb19c
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "150m"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample
+  namespace: dev
+spec:
+  selector:
+    app: sample
+  ports:
+  - port: 80
+    targetPort: 8080
