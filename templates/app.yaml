@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: sample
-        image: 200148130345.dkr.ecr.ap-northeast-2.amazonaws.com/python:f254a82577c3e9e0608a88fe243187886d4c1135
+        image: 200148130345.dkr.ecr.ap-northeast-2.amazonaws.com/python:89513af485f2593e367f138f3ba13e9f8619ed04
         imagePullPolicy: Always
         resources:
           limits:
