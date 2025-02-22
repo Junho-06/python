@@ -55,5 +55,5 @@ jobs:
         git config --global user.email "github-actions@github.com"
         git config --global user.name "github-actions"
         git add templates/app.yaml
-        git commit -m "Update image to $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        git commit -m "Update image tag"
         git push
