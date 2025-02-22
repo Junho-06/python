@@ -8,7 +8,6 @@ on:
     paths:
       - 'Dockerfile'
       - 'app.py'
-      - '.github/workflows/**'
       
 env:
   AWS_REGION: ap-northeast-2
@@ -42,3 +41,18 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Update image in templates/app.yaml
+      run: |
+        ECR_IMAGE="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        sed -i "s|image: .*|image: $ECR_IMAGE|" templates/app.yaml
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "github-actions"
+        git add templates/app.yaml
+        git commit -m "Update image to $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
