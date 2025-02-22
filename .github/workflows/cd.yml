@@ -1,13 +1,14 @@
 name: ArgoCD Sync Deployment
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Dockerizing to Amazon ECR"]
     types:
       - completed
 
 env:
-  ARGOCD_SERVER: http://a9278b17e345148c1964313a23134432-551075549.ap-northeast-2.elb.amazonaws.com
+  ARGOCD_SERVER: a9278b17e345148c1964313a23134432-551075549.ap-northeast-2.elb.amazonaws.com
   ARGOCD_APP_NAME: sample-app
 
 jobs:
