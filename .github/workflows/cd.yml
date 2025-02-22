@@ -1,0 +1,38 @@
+name: ArgoCD Sync Deployment
+
+on:
+  workflow_run:
+    workflows: ["Dockerizing to Amazon ECR"]
+    types:
+      - completed
+
+env:
+  ARGOCD_SERVER: http://a9278b17e345148c1964313a23134432-551075549.ap-northeast-2.elb.amazonaws.com
+  ARGOCD_APP_NAME: sample-app
+
+jobs:
+  sync:
+    name: Sync ArgoCD Application
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install ArgoCD CLI
+      run: |
+        curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+        chmod +x /usr/local/bin/argocd
+
+    - name: Login to ArgoCD
+      run: |
+        argocd login $ARGOCD_SERVER --username ${{ secrets.ARGOCD_USERNAME }} --password ${{ secrets.ARGOCD_PASSWORD }} --insecure
+
+    - name: Sync ArgoCD Application
+      run: |
+        argocd app sync $ARGOCD_APP_NAME
+        argocd app wait $ARGOCD_APP_NAME --health
+
+    - name: Logout from ArgoCD
+      run: |
+        argocd logout $ARGOCD_SERVER
