@@ -1,6 +1,7 @@
 name: Dockerizing to Amazon ECR
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
